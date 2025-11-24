@@ -54,7 +54,7 @@
       const xVal = parseFloat(document.getElementById("x_value").value);
 
       try {
-        const response = await fetch("https://linear-regression-algorithm.onrender.com/", {
+        const response = await fetch("https://linear-regression-algorithm.onrender.com/predict", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ x: xVal })
