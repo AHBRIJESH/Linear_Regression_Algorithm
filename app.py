@@ -1,12 +1,17 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-import pickle
-import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
 
 app = Flask(__name__)
 CORS(app)
 
-model = pickle.load(open("model.pkl", "rb"))
+df = pd.read_csv("data.csv")
+X = df.iloc[:, 0].values.reshape(-1, 1)
+y = df.iloc[:, 1].values
+
+model = LinearRegression()
+model.fit(X, y)
 
 @app.route("/")
 def home():
@@ -15,6 +20,6 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.get_json()
-    x = float(data["x"])
-    prediction = model.predict([[x]])[0]
-    return jsonify({"prediction": float(prediction)})
+    x_val = float(data["x"])
+    pred = model.predict([[x_val]])[0]
+    return jsonify({"prediction": float(pred)})
